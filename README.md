@@ -1,72 +1,63 @@
-#  Explainable Research Paper Explainer (RAG-based)
 
-##  Overview
+# **Explainable Research Paper Explainer (RAG-based)**
 
-This project implements an **Explainable Retrieval-Augmented Generation (RAG)** system for **research paper understanding**.
-Unlike standard QA systems, this application not only answers user questions but also **explicitly shows where the answer comes from** using **retrieved evidence, extracted entities, and an explanation graph**.
+## **Overview**
 
-The system is designed to work directly with **research paper PDFs**, making it suitable for academic exploration, literature review, and explainable AI demonstrations.
+This project implements an **Explainable Retrieval-Augmented Generation (RAG)** system for understanding **research papers**. Users can upload a PDF, ask questions, and receive **grounded answers**, along with **supporting evidence**, an **LLM-generated explanation (knowledge) graph**, and **recommended follow-up questions**.
 
----
-
-##  Key Objectives
-
-* Enable **question answering over research papers**
-* Ensure **answers are grounded in the source document**
-* Provide **transparent explanations** via entities and relationships
-* Support **interactive PDF upload** through a web interface
-* Suggest **meaningful follow-up questions** for guided exploration
+Unlike standard QA systems, this application emphasizes **transparency and trust** by explicitly showing how answers are derived from the source document.
 
 ---
 
-##  System Architecture
+## **Key Features**
 
-The system follows a **modular and explainable pipeline**:
+* PDF-based **question answering**
+* **Evidence-grounded answers** (no hallucination)
+* Automatic **research paper sectioning**
+* **Semantic retrieval** using embeddings
+* **Knowledge graph construction** from answers and evidence
+* Context-aware **follow-up question recommendations**
+* Interactive **Streamlit web interface**
+
+---
+
+## **System Pipeline**
 
 ```
-PDF Upload (Streamlit)
-        ↓
+PDF Upload
+   ↓
 PDF → Text Extraction
-        ↓
-Text Segmentation (High-signal sections)
-        ↓
-Semantic Retrieval (OpenAI embeddings)
-        ↓
-Entity Extraction (spaCy)
-        ↓
-Explanation Graph Construction
-        ↓
+   ↓
+High-signal Section Segmentation
+   ↓
+Semantic Retrieval (Embeddings + Similarity)
+   ↓
 Grounded Answer Generation
-        ↓
+   ↓
+Explanation Graph Construction
+   ↓
 Recommended Follow-up Questions
 ```
 
-Each stage is explicitly implemented and inspectable, ensuring transparency and debuggability.
+Each stage is modular, inspectable, and explainable.
 
 ---
 
-##  Project Structure
+## **Project Structure**
 
 ```
-RAG_with_explainable_graph/
+project/
 │
-├── data/
-│   ├── papers/          # Optional preloaded papers
-│   └── processed/       # Debug / intermediate outputs
+├── app.py                  # Streamlit application
+├── pipeline.py             # Full RAG pipeline orchestration
 │
-├── src/
-│   ├── document_ingestor.py     # PDF → text
-│   ├── paper_loader.py          # Text segmentation
-│   ├── retriever.py             # Semantic retrieval
-│   ├── entity_extractor.py      # Entity extraction
-│   ├── graph_builder.py         # Explanation graph
-│   ├── answer_generator.py      # Grounded answer generation
-│   ├── recommender.py           # Recommended questions
-│   └── pipeline.py              # Full pipeline orchestration
-│
-├── app/
-│   ├── app.py                   # Streamlit app
-│   └── ui_components.py         # Reusable UI components
+├── document_ingestor.py    # PDF → text extraction
+├── paper_loader.py         # Section segmentation
+├── retriever.py            # Semantic retrieval (embeddings)
+├── answer_generator.py     # Grounded answer generation
+├── graph_builder.py        # Knowledge graph construction
+├── recommender.py          # Follow-up question generation
+├── ui_components.py        # UI rendering (graph, evidence, questions)
 │
 ├── requirements.txt
 ├── .env
@@ -75,55 +66,52 @@ RAG_with_explainable_graph/
 
 ---
 
-##  Technologies Used
+## **Technologies Used**
 
-* **Python 3**
+* **Python**
 * **Streamlit** – Web interface
-* **OpenAI API** – Embeddings & answer generation
-* **spaCy** – Entity extraction
-* **NetworkX** – Explanation graph construction
+* **OpenAI API** – Embeddings and LLM reasoning
 * **PyMuPDF (fitz)** – PDF text extraction
-* **scikit-learn** – Similarity computation
+* **scikit-learn** – Cosine similarity
+* **NetworkX & PyVis** – Knowledge graph creation and visualization
+* **NumPy**
 
 ---
 
-##  How It Works (Step-by-Step)
+## **How It Works**
 
 1. **PDF Upload**
-   The user uploads a research paper PDF via the Streamlit interface.
+   Users upload a research paper via the Streamlit UI.
 
-2. **Document Ingestion**
-   The PDF is converted to raw text in memory (no manual file handling).
+2. **Text Extraction**
+   The PDF is converted to raw text in memory.
 
-3. **Text Segmentation**
-   Only high-signal sections (Abstract, Introduction, Method, etc.) are retained.
+3. **Section Segmentation**
+   Only meaningful sections (abstract, introduction, method, etc.) are retained.
 
 4. **Semantic Retrieval**
-   OpenAI embeddings are used to retrieve the most relevant sections for the user’s query.
+   Query and sections are embedded and compared using cosine similarity.
 
-5. **Entity Extraction**
-   Key concepts are extracted from the retrieved evidence using deterministic NLP rules.
+5. **Answer Generation**
+   Answers are generated strictly from retrieved evidence with bounded tokens.
 
-6. **Explanation Graph**
-   Entities are connected based on co-occurrence to form a local explanation graph.
+6. **Knowledge Graph Construction**
+   Key concepts and relationships are extracted into a structured graph.
 
-7. **Grounded Answer Generation**
-   The final answer is generated **strictly from retrieved evidence**, preventing hallucination.
-
-8. **Recommended Questions**
-   The system suggests three context-aware follow-up questions to guide exploration.
+7. **Follow-up Questions**
+   Three context-aware research questions are generated for deeper exploration.
 
 ---
 
-##  Running the Application
+## **Running the Application**
 
-###  Install Dependencies
+### **1. Install Dependencies**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-###   Set OpenAI API Key
+### **2. Set OpenAI API Key**
 
 Create a `.env` file:
 
@@ -131,50 +119,40 @@ Create a `.env` file:
 OPENAI_API_KEY=your_api_key_here
 ```
 
-###  Run Streamlit App
+### **3. Run the App**
 
 ```bash
-streamlit run app/app.py
+streamlit run app.py
 ```
 
-Open the displayed local URL in your browser.
-
 ---
 
-##  Example Use Cases
+## **Example Use Cases**
 
 * Understanding complex research papers quickly
-* Exploring methodologies and limitations of academic work
-* Demonstrating **explainable AI** concepts
-* Academic demos, hackathons, and interviews
+* Academic literature review
+* Demonstrating **Explainable AI**
+* Internship, interview, or project demonstrations
+* RAG system prototyping
 
 ---
 
-##  Explainability & Trustworthiness
+## **Explainability Principles**
 
-This system avoids black-box behavior by:
-
-* Retrieving explicit evidence before answering
-* Extracting entities directly from source text
-* Constructing a visible explanation graph
-* Constraining the language model to retrieved context only
-
-As a result, **every answer can be traced back to the paper**.
+* Answers are **strictly grounded in retrieved evidence**
+* Knowledge graphs expose **conceptual relationships**
+* No black-box responses
+* Clear traceability from answer → evidence → document
 
 ---
 
-##  Future Enhancements
+## **Future Enhancements**
 
-* Interactive graph visualization
-* Section-wise citation highlighting
+* Interactive graph filtering
 * Multi-paper comparison
-* Persistent vector storage
-* User-clickable recommended questions
+* Persistent vector database
+* Citation-level highlighting
+* Exportable explanations
 
 ---
-
-##  Final Note
-
-This project is intentionally designed to balance **AI capability with transparency**.
-It demonstrates not just *what* the answer is — but **why that answer should be trusted**.
 
