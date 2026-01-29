@@ -1,63 +1,63 @@
 
-# **Explainable Research Paper Explainer (RAG-based)**
+# **Explainable Research Paper Explainer (RAG-based System)**
 
-## **Overview**
+## 📌 Overview
 
-This project implements an **Explainable Retrieval-Augmented Generation (RAG)** system for understanding **research papers**. Users can upload a PDF, ask questions, and receive **grounded answers**, along with **supporting evidence**, an **LLM-generated explanation (knowledge) graph**, and **recommended follow-up questions**.
+This project implements an **Explainable Retrieval-Augmented Generation (RAG)** system that helps users understand **research papers** in a transparent and trustworthy way. Users can upload a PDF, ask questions, and receive **evidence-grounded answers**, an **LLM-generated explanation graph**, and **context-aware follow-up questions**.
 
-Unlike standard QA systems, this application emphasizes **transparency and trust** by explicitly showing how answers are derived from the source document.
+Unlike standard QA systems, this application focuses on **explainability**, clearly showing how answers are derived from the source document. 
 
 ---
 
-## **Key Features**
+## 🚀 Key Features
 
 * PDF-based **question answering**
-* **Evidence-grounded answers** (no hallucination)
-* Automatic **research paper sectioning**
-* **Semantic retrieval** using embeddings
-* **Knowledge graph construction** from answers and evidence
-* Context-aware **follow-up question recommendations**
+* **Evidence-grounded responses** to reduce hallucinations
+* Automatic **research paper section segmentation**
+* **Semantic retrieval** using embeddings and cosine similarity
+* **Knowledge graph generation** from answers and evidence
+* **Follow-up question recommendations**
 * Interactive **Streamlit web interface**
 
 ---
 
-## **System Pipeline**
+## 🧠 System Pipeline
 
 ```
 PDF Upload
    ↓
-PDF → Text Extraction
+Text Extraction
    ↓
-High-signal Section Segmentation
+High-Signal Section Segmentation
    ↓
-Semantic Retrieval (Embeddings + Similarity)
+Semantic Retrieval (Embeddings)
    ↓
 Grounded Answer Generation
    ↓
-Explanation Graph Construction
+Knowledge Graph Construction
    ↓
-Recommended Follow-up Questions
+Follow-up Question Recommendation
 ```
 
 Each stage is modular, inspectable, and explainable.
 
 ---
 
-## **Project Structure**
+## 🏗️ Project Structure
 
 ```
 project/
 │
 ├── app.py                  # Streamlit application
-├── pipeline.py             # Full RAG pipeline orchestration
+├── pipeline.py             # End-to-end RAG pipeline
 │
 ├── document_ingestor.py    # PDF → text extraction
 ├── paper_loader.py         # Section segmentation
-├── retriever.py            # Semantic retrieval (embeddings)
-├── answer_generator.py     # Grounded answer generation
-├── graph_builder.py        # Knowledge graph construction
+├── retriever.py            # Semantic retrieval
+├── answer_generator.py     # Evidence-grounded answers
+├── graph_builder.py        # Knowledge graph generation
 ├── recommender.py          # Follow-up question generation
-├── ui_components.py        # UI rendering (graph, evidence, questions)
+├── ui_components.py        # UI rendering (graph, evidence)
 │
 ├── requirements.txt
 ├── .env
@@ -66,52 +66,26 @@ project/
 
 ---
 
-## **Technologies Used**
+## 🛠️ Technologies Used
 
 * **Python**
 * **Streamlit** – Web interface
-* **OpenAI API** – Embeddings and LLM reasoning
+* **OpenAI API** – LLM reasoning & embeddings
 * **PyMuPDF (fitz)** – PDF text extraction
 * **scikit-learn** – Cosine similarity
-* **NetworkX & PyVis** – Knowledge graph creation and visualization
 * **NumPy**
 
 ---
 
-## **How It Works**
+## ▶️ How to Run
 
-1. **PDF Upload**
-   Users upload a research paper via the Streamlit UI.
-
-2. **Text Extraction**
-   The PDF is converted to raw text in memory.
-
-3. **Section Segmentation**
-   Only meaningful sections (abstract, introduction, method, etc.) are retained.
-
-4. **Semantic Retrieval**
-   Query and sections are embedded and compared using cosine similarity.
-
-5. **Answer Generation**
-   Answers are generated strictly from retrieved evidence with bounded tokens.
-
-6. **Knowledge Graph Construction**
-   Key concepts and relationships are extracted into a structured graph.
-
-7. **Follow-up Questions**
-   Three context-aware research questions are generated for deeper exploration.
-
----
-
-## **Running the Application**
-
-### **1. Install Dependencies**
+### 1️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### **2. Set OpenAI API Key**
+### 2️⃣ Set OpenAI API Key
 
 Create a `.env` file:
 
@@ -119,7 +93,7 @@ Create a `.env` file:
 OPENAI_API_KEY=your_api_key_here
 ```
 
-### **3. Run the App**
+### 3️⃣ Run the Application
 
 ```bash
 streamlit run app.py
@@ -127,32 +101,31 @@ streamlit run app.py
 
 ---
 
-## **Example Use Cases**
+## 📚 Example Use Cases
 
 * Understanding complex research papers quickly
 * Academic literature review
 * Demonstrating **Explainable AI**
-* Internship, interview, or project demonstrations
-* RAG system prototyping
+* LLM / RAG system prototyping
+* Internship and interview demonstrations
 
 ---
 
-## **Explainability Principles**
+## 🔍 Explainability Principles
 
 * Answers are **strictly grounded in retrieved evidence**
 * Knowledge graphs expose **conceptual relationships**
+* Clear traceability from **answer → evidence → document**
 * No black-box responses
-* Clear traceability from answer → evidence → document
 
 ---
 
-## **Future Enhancements**
+## 🔮 Future Enhancements
 
-* Interactive graph filtering
 * Multi-paper comparison
 * Persistent vector database
 * Citation-level highlighting
+* Interactive graph filtering
 * Exportable explanations
 
 ---
-
